@@ -2,10 +2,10 @@
 #define ROVER_H
 
 #include <string>
-#include <memory>
 #include <iostream>
 #include <utility>
 #include <vector>
+#include <algorithm>
 
 namespace MarsRover{
     class Rover{
@@ -13,8 +13,8 @@ namespace MarsRover{
             std::string m_name;
             std::pair<double, double> m_currPosition;
             std::string m_orientation;
-            //std::string m_explInstr;
-            //std::vector<std::pair<double, double>> m_path;
+            std::string m_explInstr;
+            std::vector<std::pair<double, double>> m_path;
         public:
 
             //default constructor
