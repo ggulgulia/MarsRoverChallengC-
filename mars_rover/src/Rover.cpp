@@ -9,6 +9,20 @@ MarsRover::Rover::Rover(){
     m_explInstr = "MLMLMLM"; //a dummy exploration variable
     //
     ////count how many steps rover has to move
-    size_t count =  std::count(m_explInstr.begin(), m_explInstr.end(), 'M');
-    std::cout << "number of steps to move: "<< count<< "\n";
+    allocate_storage_for_path(m_path, m_explInstr);
+}
+
+
+MarsRover::Rover::Rover(const std::string& name, const std::string& posAndHead, const std::string& exploration):
+    m_name(name), m_explInstr(exploration){
+
+        std::stringstream ss(posAndHead);
+        ss >> m_currPosition.first >> m_currPosition.second >> m_orientation;
+        m_orientation = posAndHead[4];
+        allocate_storage_for_path(m_path, m_explInstr);
+    }
+
+void MarsRover::Rover::print_curr_pos(){
+    std::cout << m_name << "s current position is (" << m_currPosition.first <<"," << m_currPosition.second <<")\n";
+    std::cout << m_name << "is pointing towards " << m_orientation << "-ward direction\n"; 
 }
