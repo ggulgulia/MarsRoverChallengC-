@@ -1,0 +1,6 @@
+*.swp
+.~lock.C++ ROVERS TASK.docx#
+*.swo
+*.swap
+*.docx
+build/
