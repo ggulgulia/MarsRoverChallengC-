@@ -18,11 +18,40 @@ MarsRover::Rover::Rover(const std::string& name, const std::string& posAndHead, 
 
         std::stringstream ss(posAndHead);
         ss >> m_currPosition.first >> m_currPosition.second >> m_orientation;
-        m_orientation = posAndHead[4];
         allocate_storage_for_path(m_path, m_explInstr);
     }
 
+const std::string MarsRover::Rover::get_name(){
+return m_name;
+}
+std::pair<double, double>& MarsRover::Rover::get_curr_pos(){
+    return m_currPosition;
+}
+
+const std::pair<double, double>& MarsRover::Rover::get_curr_pos() const {
+    return m_currPosition;
+}
+
 void MarsRover::Rover::print_curr_pos(){
+    std::unordered_map<std::string, std::string> directions;
+    directions = {{"N", "North"}, {"S", "South"},{"W", "West"}, {"E", "East"}};
     std::cout << m_name << "s current position is (" << m_currPosition.first <<"," << m_currPosition.second <<")\n";
-    std::cout << m_name << "is pointing towards " << m_orientation << "-ward direction\n"; 
+    std::cout << m_name << " is pointing towards " << directions[m_orientation] << "ward direction\n"; 
+}
+
+
+void MarsRover::Rover::move(){
+
+    for(const auto s:m_explInstr){
+        std::cout << "moving " << s << "\n";
+        switch(s){
+            case 'L':MarsRover::Rover::rotateLeft();
+                     break;
+            case 'R':MarsRover::Rover::rotateRight();
+                     break;
+            case 'M': MarsRover::Rover::moveForward();
+                      break;
+        }
+        MarsRover::Rover::print_curr_pos();
+    }
 }
