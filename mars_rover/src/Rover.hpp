@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <sstream>
 #include <unordered_map>
+#include<fstream>
 
 static const std::string cardinalDirections{"NESW"};
 
@@ -19,13 +20,13 @@ namespace MarsRover{
             std::string m_orientation;
             std::string m_explInstr;
             std::vector<std::pair<double, double>> m_path;
-            size_t m_stepsMoved;
+            size_t m_stepsMoved{}; //rover has not moved when it is initialized
             
             void allocate_storage_for_path(std::vector<std::pair<double, double>> &path, const std::string& expl){
                 m_stepsMoved = 0;
                 size_t count = std::count(expl.begin(), expl.end(), 'M');
                 std::cout << "number of steps to move: "<< count<< "\n";
-                path.resize(count);
+                path.resize(count+1); //+1 for starting position
 
             }
 
@@ -50,6 +51,9 @@ namespace MarsRover{
             void print_curr_pos() noexcept;
             const size_t steps_moved() noexcept;
             void move();
+            void print_rover_path_trail() noexcept;
+
+            void write_rover_trail_to_file(const std::string& filename ) noexcept;
     };
 
 }

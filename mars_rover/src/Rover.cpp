@@ -33,7 +33,7 @@ MarsRover::Rover::Rover(const std::string& name, const std::string& posAndHead, 
         m_orientation = orient;
         
         allocate_storage_for_path(m_path, m_explInstr);
-        m_path.push_back(m_currPosition);
+        m_path[m_stepsMoved++] = m_currPosition;
     }
 
 MarsRover::Rover::~Rover(){
@@ -63,8 +63,7 @@ void MarsRover::Rover::moveForward(){
                 std::pair<double, double> move = moveForwardResult[m_orientation];
                 m_currPosition.first += move.first;
                 m_currPosition.second += move.second;
-                m_path.push_back(m_currPosition);
-                ++m_stepsMoved;
+                m_path[m_stepsMoved++] = m_currPosition;
             }
 const std::string MarsRover::Rover::get_name() noexcept{
 return m_name;
@@ -80,7 +79,7 @@ const std::pair<double, double>& MarsRover::Rover::get_curr_pos() const noexcept
 void MarsRover::Rover::print_curr_pos() noexcept{
     std::unordered_map<std::string, std::string> directions;
     directions = {{"N", "North"}, {"S", "South"},{"W", "West"}, {"E", "East"}};
-    std::cout << m_name << "s current position is (" << m_currPosition.first <<"," << m_currPosition.second <<")\n";
+    std::cout << m_name << "'s current position is (" << m_currPosition.first <<"," << m_currPosition.second <<")\n";
     std::cout << m_name << " is pointing towards " << directions[m_orientation] << "ward direction\n"; 
 }
 
@@ -103,6 +102,28 @@ void MarsRover::Rover::move(){
                             \n'L' for left rotation, 'R' for right rotation and 'M' for forward motion\
                             \nCheck the input file or exploration directive\n");
         }
-        MarsRover::Rover::print_curr_pos();
+        //MarsRover::Rover::print_curr_pos();
     }
+}
+
+void MarsRover::Rover::print_rover_path_trail() noexcept{
+    std::cout << "The rover " << m_name << " moved " << m_stepsMoved-1 << " steps\n";
+    for(auto path : m_path){
+    std::cout << "(" << path.first << "," << path.second <<")\n";
+    }
+
+}
+void MarsRover::Rover::write_rover_trail_to_file(const std::string& filePath) noexcept{
+    
+    print_rover_path_trail();
+    std::cout << "Output written to file: " << filePath << "\n";
+    std::ofstream outfile;
+    outfile.open(filePath, std::ios_base::app);
+    outfile << "\n===================================================================\n";
+    outfile << "The rover " << m_name << " moved " << m_stepsMoved-1 << " steps\n";
+    for(auto path : m_path){
+    outfile << "(" << path.first << "," << path.second <<")\n";
+    }
+    outfile << "===================================================================\n";
+    outfile.close();
 }
