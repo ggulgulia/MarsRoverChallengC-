@@ -13,14 +13,17 @@ MarsRover::Rover::Rover() noexcept{
 }
 
 
-MarsRover::Rover::Rover(const std::string& name, const std::string& posAndHead, const std::string& exploration):
-    m_name(name), m_explInstr(exploration){
+MarsRover::Rover::Rover(const std::string& name, const std::string& posAndHead, 
+                        const std::string& exploration, const point& corner2):
+    m_name(name), m_corner1(std::make_pair(0.0, 0.0)), 
+    m_corner2(corner2), m_explInstr(exploration){
         
         double xCoord, yCoord;
         std::string orient;
         std::stringstream ss(posAndHead);
         ss >> xCoord >> yCoord >> orient;
-        if(xCoord < 0 || yCoord < 0){
+        
+        if(!MarsRover::Rover::is_within_bounds(std::make_pair(xCoord, yCoord))){
             throw("invalid starting position\nthe rover is outside the permitted exploration boundaries\n");
         }
         if(cardinalDirections.find(orient) == std::string::npos){
@@ -63,14 +66,18 @@ void MarsRover::Rover::moveForward(){
                 point move = moveForwardResult[m_orientation];
                 m_currPosition.first += move.first;
                 m_currPosition.second += move.second;
+                if(!MarsRover::Rover::is_within_bounds(m_currPosition)){
+                    throw("ROVER MOVED OUT OF PERMITTED EXPLORATION REGION\
+                          \nCheck and correct the exploration directive or the exploration region\n");
+                }
                 m_path[m_stepsMoved++] = m_currPosition;
             }
 
 //general move function
 void MarsRover::Rover::move(){
 
+    std::cout << "\nRover "<< m_name << " begins its exploration now\n";
     for(const auto s:m_explInstr){
-        std::cout << "moving " << s << "\n";
         switch(s){
             case 'L':MarsRover::Rover::rotateLeft();
                      break;
@@ -101,8 +108,8 @@ const point& MarsRover::Rover::get_curr_pos() const noexcept {
 void MarsRover::Rover::print_curr_pos() noexcept{
     std::unordered_map<std::string, std::string> directions;
     directions = {{"N", "North"}, {"S", "South"},{"W", "West"}, {"E", "East"}};
-    std::cout << m_name << "'s current position is (" << m_currPosition.first <<"," << m_currPosition.second <<")\n";
-    std::cout << m_name << " is pointing towards " << directions[m_orientation] << "ward direction\n"; 
+    std::cout << "current position and orientation of rover:\
+                  \n("  << m_currPosition.first << "," << m_currPosition.second << ")" << m_orientation << "\n";
 }
 
 const size_t MarsRover::Rover::steps_moved() noexcept{
@@ -122,13 +129,28 @@ void MarsRover::Rover::write_rover_trail_to_file(const std::string& filePath) no
     
     print_rover_path_trail();
     std::cout << "Output written to file: " << filePath << "\n";
+    
+    //check if filePath exists
+    //delete if it does
+    //std::ifstream checkFile;
+    //checkFile.open(filePath);
+    //if(checkFile.is_open()){
+    //    std::cout << "Output file is already present and will be overwritten\n";
+    //    checkFile.close();
+    //    std::remove(filePath.c_str());
+    //}
     std::ofstream outfile;
     outfile.open(filePath, std::ios_base::app);
     outfile << "\n===================================================================\n";
     outfile << "The rover " << m_name << " moved " << m_stepsMoved-1 << " steps\n";
+    outfile << "Rover path trail:\n";
     for(auto path : m_path){
     outfile << "(" << path.first << "," << path.second <<")\n";
     }
+
+    outfile << "Final position and orientation of rover:\n";
+    outfile << m_currPosition.first << " " << m_currPosition.second << " " << m_orientation << "\n";
+    
     outfile << "===================================================================\n";
     outfile.close();
 }

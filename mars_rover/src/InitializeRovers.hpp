@@ -5,14 +5,18 @@
 namespace MarsRover{
     class InitializeRovers{
         private:
-            point m_corner1;
-            point m_corner2;
             std::vector<std::shared_ptr<Rover>> m_roverContainer;
             std::string m_fileName;
         public:
             InitializeRovers();
-            explicit InitializeRovers(const std::string& input);
+            explicit InitializeRovers(const std::string& input); 
 
+            //preventing implicit copy semantics
+            InitializeRovers(const InitializeRovers& ) = delete;
+            InitializeRovers& operator=(InitializeRovers&) = delete;
+            
+            //return reference to rover container 
+            std::vector<std::shared_ptr<Rover>>& get_rovers();
 
     };
 
