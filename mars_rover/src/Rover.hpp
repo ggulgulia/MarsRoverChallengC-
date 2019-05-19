@@ -79,7 +79,8 @@ namespace MarsRover{
             const size_t steps_moved() noexcept;
             void print_rover_path_trail() noexcept;
 
-            void write_rover_trail_to_file(const std::string& filename ) noexcept;
+            //void write_rover_trail_to_file(const std::string& filename ) noexcept;
+            void write_rover_trail_to_file(std::ofstream& outfile ) noexcept;
     };
 
 }

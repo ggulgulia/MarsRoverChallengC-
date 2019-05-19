@@ -1,7 +1,7 @@
 #include "InitializeRovers.hpp"
 
 static const std::vector<std::string> get_rover_names(){
-        std::vector<std::string> rover_names{"R2D2", "C3PO", "T1000", "T5000","WallE", "Eva", "Mechagodzilla", "HansSolo", "Captain_Kirk", "MrSpock","Luke", "BladeRunner", "MrSulu", "Aniken", "Palpatine", "Phenias", "Ferbs", "Perry", "MrChekov", "Captain_Uhura"};
+        std::vector<std::string> rover_names{"R2D2", "C3PO", "T1000", "T5000","WallE", "Eva""Mechagodzilla", "HansSolo", "Captain_Kirk", "MrSpock","Luke", "BladeRunner", "MrSulu", "Aniken", "Palpatine", "Phenias", "Ferbs", "Perry", "MrChekov", "Captain_Uhura"};
 
             return rover_names;
 }
@@ -46,6 +46,7 @@ MarsRover::InitializeRovers::InitializeRovers(const std::string& input){
 
         }
     }
+    inputFile.close();
 }
     
     std::vector<std::shared_ptr<MarsRover::Rover>>& MarsRover::InitializeRovers::get_rovers(){
