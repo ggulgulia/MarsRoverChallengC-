@@ -9,6 +9,8 @@
 #include <sstream>
 #include <unordered_map>
 
+static const std::string cardinalDirections{"NESW"};
+
 namespace MarsRover{
     class Rover{
         private:
@@ -30,38 +32,23 @@ namespace MarsRover{
         public:
 
             //default constructor
-            Rover();
+            Rover() noexcept;
             Rover(const std::string& name, const std::string& posAndHead, const std::string&exploration);
+            ~Rover();
             Rover(const Rover& ) = delete; //prevent implicit copy constructors
+            Rover operator=(Rover&) = delete; //prevent implicit assignment operator 
             
-            void rotateLeft(){
-                std::unordered_map<std::string, std::string> rotateLeftResult{{"N","W"}, {"W","S"}, {"S","E"}, {"E", "N"}};
-                m_orientation = rotateLeftResult[m_orientation];
-            }
-
-            void rotateRight(){
-                std::unordered_map<std::string, std::string> rotateLeftResult{{"N","E"}, {"E","S"}, {"S","W"}, {"W", "N"}};
-                m_orientation = rotateLeftResult[m_orientation];
-            }
-
-            void moveForward(){
-                std::unordered_map<std::string, std::pair<double, double>> moveForwardResult{
-            {"N", std::make_pair(0,1)}, 
-            {"E", std::make_pair(1,0)}, 
-            {"S", std::make_pair(0,-1)}, 
-            {"W", std::make_pair(-1,0)}
-            };
-                std::pair<double, double> move = moveForwardResult[m_orientation];
-                m_currPosition.first += move.first;
-                m_currPosition.second += move.second;
-                ++m_stepsMoved;
-            }
+            //rover movements
+            void rotateLeft() noexcept;
+            void rotateRight() noexcept;
+            void moveForward();
 
             //helper functions
-            const std::string get_name();
-            std::pair<double, double>& get_curr_pos();
-            const std::pair<double, double>& get_curr_pos() const;
-            void print_curr_pos();
+            const std::string get_name() noexcept;
+            std::pair<double, double>& get_curr_pos()noexcept;
+            const std::pair<double, double>& get_curr_pos() const noexcept;
+            void print_curr_pos() noexcept;
+            const size_t steps_moved() noexcept;
             void move();
     };
 

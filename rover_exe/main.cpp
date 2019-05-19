@@ -11,12 +11,16 @@ int main(int argc, char *argv[])
     const std::string filename("../input.txt");
     
     
-    MarsRover::Rover r1;
-    MarsRover::Rover r2("c3po", "1 1 E", "MRMRMRM");
-
-    r1.print_curr_pos();
+    try{
+    MarsRover::Rover r2("c3po", "1 1 G", "MRMRMRM");
     r2.print_curr_pos();
-    //r2.move();
+    r2.move();
+    }
+    catch(const char* error){
+        std::cout << "ERROR:" << error;
+        std::cout << "ABORTING THE PROGRAM!\n";
+        exit(0);
+    }
     return 0;
 
 }
