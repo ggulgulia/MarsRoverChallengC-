@@ -10,19 +10,22 @@
 #include <unordered_map>
 #include<fstream>
 
-static const std::string cardinalDirections{"NESW"};
+//getting rid of cumbersome typename
+typedef std::pair<double, double> point;
 
+static const std::string cardinalDirections{"NESW"};
 namespace MarsRover{
     class Rover{
         private:
-            std::string m_name;
-            std::pair<double, double> m_currPosition;
-            std::string m_orientation;
-            std::string m_explInstr;
-            std::vector<std::pair<double, double>> m_path;
+            std::string m_name; //rover name
+            std::vector<point> m_corners; //bounds for rover exploration
+            point m_currPosition;         
+            std::string m_orientation;    //orientation of the head of rover
+            std::string m_explInstr;      //rover's exploration instructions
+            std::vector<std::pair<double, double>> m_path; //stores the trail of path traversed by rover
             size_t m_stepsMoved{}; //rover has not moved when it is initialized
             
-            void allocate_storage_for_path(std::vector<std::pair<double, double>> &path, const std::string& expl){
+            void allocate_storage_for_path(std::vector<point> &path, const std::string& expl){
                 m_stepsMoved = 0;
                 size_t count = std::count(expl.begin(), expl.end(), 'M');
                 std::cout << "number of steps to move: "<< count<< "\n";
@@ -43,6 +46,7 @@ namespace MarsRover{
             void rotateLeft() noexcept;
             void rotateRight() noexcept;
             void moveForward();
+            void move();
 
             //helper functions
             const std::string get_name() noexcept;
@@ -50,7 +54,6 @@ namespace MarsRover{
             const std::pair<double, double>& get_curr_pos() const noexcept;
             void print_curr_pos() noexcept;
             const size_t steps_moved() noexcept;
-            void move();
             void print_rover_path_trail() noexcept;
 
             void write_rover_trail_to_file(const std::string& filename ) noexcept;

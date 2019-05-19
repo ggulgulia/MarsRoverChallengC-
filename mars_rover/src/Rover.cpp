@@ -21,7 +21,7 @@ MarsRover::Rover::Rover(const std::string& name, const std::string& posAndHead, 
         std::stringstream ss(posAndHead);
         ss >> xCoord >> yCoord >> orient;
         if(xCoord < 0 || yCoord < 0){
-            throw("invalid starting position\nthe bot is outside the permitted exploration boundaries\n");
+            throw("invalid starting position\nthe rover is outside the permitted exploration boundaries\n");
         }
         if(cardinalDirections.find(orient) == std::string::npos){
             throw("invalid starting orientation of the rover head.\
@@ -60,33 +60,13 @@ void MarsRover::Rover::moveForward(){
                 {"S", std::make_pair(0,-1)}, 
                 {"W", std::make_pair(-1,0)}
                 };
-                std::pair<double, double> move = moveForwardResult[m_orientation];
+                point move = moveForwardResult[m_orientation];
                 m_currPosition.first += move.first;
                 m_currPosition.second += move.second;
                 m_path[m_stepsMoved++] = m_currPosition;
             }
-const std::string MarsRover::Rover::get_name() noexcept{
-return m_name;
-}
-std::pair<double, double>& MarsRover::Rover::get_curr_pos() noexcept{
-    return m_currPosition;
-}
 
-const std::pair<double, double>& MarsRover::Rover::get_curr_pos() const noexcept {
-    return m_currPosition;
-}
-
-void MarsRover::Rover::print_curr_pos() noexcept{
-    std::unordered_map<std::string, std::string> directions;
-    directions = {{"N", "North"}, {"S", "South"},{"W", "West"}, {"E", "East"}};
-    std::cout << m_name << "'s current position is (" << m_currPosition.first <<"," << m_currPosition.second <<")\n";
-    std::cout << m_name << " is pointing towards " << directions[m_orientation] << "ward direction\n"; 
-}
-
-const size_t MarsRover::Rover::steps_moved() noexcept{
-    return m_stepsMoved;
-}
-
+//general move function
 void MarsRover::Rover::move(){
 
     for(const auto s:m_explInstr){
@@ -106,6 +86,30 @@ void MarsRover::Rover::move(){
     }
 }
 
+//helper function
+const std::string MarsRover::Rover::get_name() noexcept{
+return m_name;
+}
+point& MarsRover::Rover::get_curr_pos() noexcept{
+    return m_currPosition;
+}
+
+const point& MarsRover::Rover::get_curr_pos() const noexcept {
+    return m_currPosition;
+}
+
+void MarsRover::Rover::print_curr_pos() noexcept{
+    std::unordered_map<std::string, std::string> directions;
+    directions = {{"N", "North"}, {"S", "South"},{"W", "West"}, {"E", "East"}};
+    std::cout << m_name << "'s current position is (" << m_currPosition.first <<"," << m_currPosition.second <<")\n";
+    std::cout << m_name << " is pointing towards " << directions[m_orientation] << "ward direction\n"; 
+}
+
+const size_t MarsRover::Rover::steps_moved() noexcept{
+    return m_stepsMoved;
+}
+
+
 void MarsRover::Rover::print_rover_path_trail() noexcept{
     std::cout << "The rover " << m_name << " moved " << m_stepsMoved-1 << " steps\n";
     for(auto path : m_path){
@@ -113,6 +117,7 @@ void MarsRover::Rover::print_rover_path_trail() noexcept{
     }
 
 }
+
 void MarsRover::Rover::write_rover_trail_to_file(const std::string& filePath) noexcept{
     
     print_rover_path_trail();

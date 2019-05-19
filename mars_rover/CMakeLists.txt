@@ -4,6 +4,8 @@ add_library(
     rover SHARED
     src/Rover.hpp
     src/Rover.cpp
+    src/InitializeRovers.hpp
+    src/InitializeRovers.cpp
     )
 
 #rover refers to the target library and not a directory
