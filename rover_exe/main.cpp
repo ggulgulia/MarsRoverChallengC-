@@ -1,5 +1,6 @@
 #include <iostream>
-#include <say_hello/hello.hpp>
+//#include <Rover.hpp>
+#include <InitializeRovers.hpp>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -8,24 +9,35 @@
 
 int main(int argc, char *argv[])
 {
-    const std::string filename("input.txt");
-    
-    std::ifstream *inputFile = new std::ifstream();
-    //std::shared_ptr<std::ifstream> inputFile{new std::ifstream()};
-     inputFile->open(filename);
-     std::string line;
-     while(std::getline(*inputFile, line)){
-         std::cout << line << "\n";
-     }
-     if(inputFile->is_open()){
-     std::cout << "File read successfully\n";
-     inputFile->close();
-        } 
+    if(argc != 3){
+        std::cout << "number of input arguments is incorrect\n";
+        std::cout << "format should be: <PATH TO EXECUTABLE> <PATH TO INPUT> <PATH TO OUTPUT>\n";
+        std::cout << "ABORTING THE PROGRAM!\n";
+        return 0;
+    }
 
-    else
-        std::cout << "File not found\n";
-        
-    //Hello::say_hello();
-    //std::cout << "The say hello library version is " << SAY_HELLO_VERSION << "\n";
+    const std::string inFileName(argv[1]), outFileName(argv[2]);
+    try{
+            MarsRover::InitializeRovers init(inFileName);
+            std::vector<std::shared_ptr<MarsRover::Rover>> roverContainer = init.get_rovers();
+            std::cout << "number of rovers exploring the lonely red planet: "\
+                      << roverContainer.size() << "\n"; 
+            
+            std::ofstream outFile;
+            outFile.open(outFileName, std::ios::out);
+            for(std::shared_ptr<MarsRover::Rover> rover : roverContainer){
+                rover->move();
+
+                //rover->write_rover_trail_to_file("../output.txt");
+                rover->write_rover_trail_to_file(outFile);
+             }
+            outFile.close();
+    }
+
+    catch(const char* error){
+        std::cout << "ERROR:" << error;
+        std::cout << "ABORTING THE PROGRAM!\n";
+        exit(0);
+    }
     return 0;
 }
