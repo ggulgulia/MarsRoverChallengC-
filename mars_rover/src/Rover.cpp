@@ -8,6 +8,7 @@ MarsRover::Rover::Rover() noexcept{
     m_orientation = "N";
     m_explInstr = "MLMLMLM"; //a dummy exploration variable
     allocate_storage_for_path(m_path, m_explInstr);
+    m_corner2.first = 10; m_corner2.second = 10;
 }
 
 MarsRover::Rover::Rover(const std::string& name, const std::string& posAndHead, 
@@ -15,7 +16,7 @@ MarsRover::Rover::Rover(const std::string& name, const std::string& posAndHead,
                         m_name(name), m_corner1(std::make_pair(0.0, 0.0)), 
                         m_corner2(corner2), m_explInstr(exploration){
         
-    double xCoord, yCoord;
+    int xCoord, yCoord;
     std::string orient;
     std::stringstream ss(posAndHead);
     ss >> xCoord >> yCoord >> orient;
@@ -41,19 +42,21 @@ MarsRover::Rover::Rover(const std::string& name, const std::string& posAndHead,
 }
 
 //Rotate left
-void MarsRover::Rover::rotateLeft() noexcept{
+void MarsRover::Rover::rotate_left() noexcept{
                 std::unordered_map<std::string, std::string> rotateLeftResult{{"N","W"}, {"W","S"}, {"S","E"}, {"E", "N"}};
                 m_orientation = rotateLeftResult[m_orientation];
 }
 
 //Rotate right      
-void MarsRover::Rover::rotateRight() noexcept{
+void MarsRover::Rover::rotate_right() noexcept{
                 std::unordered_map<std::string, std::string> rotateLeftResult{{"N","E"}, {"E","S"}, {"S","W"}, {"W", "N"}};
                 m_orientation = rotateLeftResult[m_orientation];
 }
             
 //Move forward
-void MarsRover::Rover::moveForward(){
+void MarsRover::Rover::move_forward(){
+
+    std::cout << "moving forward now \n";
      std::unordered_map<std::string, point> moveForwardResult{
                                                     {"N", std::make_pair(0,1)}, 
                                                     {"E", std::make_pair(1,0)}, 
@@ -67,6 +70,7 @@ void MarsRover::Rover::moveForward(){
          throw("ROVER MOVED OUT OF PERMITTED EXPLORATION REGION\
                \nCheck and correct the exploration directive or the exploration region\n");
     }
+    print_curr_pos();
     m_path[m_stepsMoved++] = m_currPosition;
 }
 
@@ -76,11 +80,11 @@ void MarsRover::Rover::move(){
     std::cout << "\nRover "<< m_name << " begins its exploration now\n";
     for(const auto s:m_explInstr){
         switch(s){
-            case 'L':MarsRover::Rover::rotateLeft();
+            case 'L':MarsRover::Rover::rotate_left();
                      break;
-            case 'R':MarsRover::Rover::rotateRight();
+            case 'R':MarsRover::Rover::rotate_right();
                      break;
-            case 'M': MarsRover::Rover::moveForward();
+            case 'M': MarsRover::Rover::move_forward();
                       break;
             default: throw("invalid exploration directive, allowed characters for exploration are: \
                             \n'L' for left rotation, 'R' for right rotation and 'M' for forward motion\
@@ -90,9 +94,29 @@ void MarsRover::Rover::move(){
     }
 }
 
-//helper function
+//setter functions
+
+void MarsRover::Rover::set_orientation(const std::string& o )noexcept {
+    m_orientation = o;
+}
+
+void MarsRover::Rover::set_position(int x, int y) noexcept{
+    m_currPosition.first = x;
+    m_currPosition.second = y;
+} 
+
+//getter functions
 const std::string MarsRover::Rover::get_name() noexcept{
 return m_name;
+}
+
+const size_t MarsRover::Rover::get_num_steps_to_move(const std::string& explorationInstructions){
+    const std::string expl(explorationInstructions);
+    return std::count(expl.begin(), expl.end(), 'M');
+}
+
+std::string MarsRover::Rover::get_orientation() const noexcept{
+    return m_orientation;
 }
 
 point& MarsRover::Rover::get_curr_pos() noexcept{
@@ -107,7 +131,7 @@ void MarsRover::Rover::print_curr_pos() noexcept{
     std::unordered_map<std::string, std::string> directions;
     directions = {{"N", "North"}, {"S", "South"},{"W", "West"}, {"E", "East"}};
     std::cout << "current position and orientation of rover:\
-                  \n("  << m_currPosition.first << "," << m_currPosition.second << ")" << m_orientation << "\n";
+                  \n("  << m_currPosition.first << "," << m_currPosition.second << ") " << m_orientation << "\n";
 }
 
 const size_t MarsRover::Rover::steps_moved() noexcept{

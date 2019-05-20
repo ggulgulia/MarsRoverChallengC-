@@ -3,9 +3,9 @@
 
 #include "Rover.hpp"
 #include <memory>
-//#include "rover_names.hpp"
 
 namespace MarsRover{
+
     class InitializeRovers{
         private:
             std::vector<std::shared_ptr<Rover>> m_roverContainer;
@@ -25,6 +25,4 @@ namespace MarsRover{
 
 }
 
-#endif /* ifndef INITIALIZE_ROVERS_H
-
- */
+#endif /* ifndef INITIALIZE_ROVERS_H */

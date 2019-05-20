@@ -12,7 +12,7 @@
 #include <cstdio>
 
 //getting rid of cumbersome typename
-typedef std::pair<double, double> point;
+typedef std::pair<int, int> point;
 
 static const std::string cardinalDirections{"NESW"};
 namespace MarsRover{
@@ -24,7 +24,7 @@ namespace MarsRover{
             point m_currPosition;         
             std::string m_orientation;    //orientation of the head of rover
             std::string m_explInstr;      //rover's exploration instructions
-            std::vector<std::pair<double, double>> m_path; //stores the trail of path traversed by rover
+            std::vector<point> m_path; //stores the trail of path traversed by rover
             size_t m_stepsMoved{}; //rover has not moved when it is initialized
            
             //private functions for the rovers
@@ -66,15 +66,21 @@ namespace MarsRover{
             Rover operator=(Rover&) = delete; //prevent implicit assignment operator 
             
             //rover movements
-            void rotateLeft() noexcept;
-            void rotateRight() noexcept;
-            void moveForward();
+            void rotate_left() noexcept;
+            void rotate_right() noexcept;
+            void move_forward();
             void move();
+            
+            //setter functions
+            void set_orientation(const std::string& o) noexcept;
+            void set_position(int x, int y) noexcept;
 
-            //helper functions
+            //getter functions
             const std::string get_name() noexcept;
-            std::pair<double, double>& get_curr_pos()noexcept;
-            const std::pair<double, double>& get_curr_pos() const noexcept;
+            const size_t get_num_steps_to_move(const std::string& explorationInstructions);
+            std::string get_orientation() const noexcept;
+            point& get_curr_pos()noexcept;
+            const point& get_curr_pos() const noexcept;
             void print_curr_pos() noexcept;
             const size_t steps_moved() noexcept;
             void print_rover_path_trail() noexcept;
