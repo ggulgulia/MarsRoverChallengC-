@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 3.2.3)
 project(mars_rover CXX) 
 
 
-add_subdirectory(mars_rover) #this is path to library and needs compilation first before
-# the library is passed to the executable code that links the library
+
+add_subdirectory(mars_rover) 
 add_subdirectory(rover_exe)
+add_subdirectory(unit_test)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
