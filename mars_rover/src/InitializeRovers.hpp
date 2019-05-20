@@ -1,3 +1,6 @@
+#ifndef INITIALIZE_ROVERS_H
+#define INITIALIZE_ROVERS_H
+
 #include "Rover.hpp"
 #include <memory>
 //#include "rover_names.hpp"
@@ -21,3 +24,7 @@ namespace MarsRover{
     };
 
 }
+
+#endif /* ifndef INITIALIZE_ROVERS_H
+
+ */
