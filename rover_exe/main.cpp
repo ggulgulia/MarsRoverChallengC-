@@ -26,9 +26,7 @@ int main(int argc, char *argv[])
             std::ofstream outFile;
             outFile.open(outFileName, std::ios::out);
             for(std::shared_ptr<MarsRover::Rover> rover : roverContainer){
-                rover->move();
-
-                //rover->write_rover_trail_to_file("../output.txt");
+                rover->explore_terrain();
                 rover->write_rover_trail_to_file(outFile);
              }
             outFile.close();

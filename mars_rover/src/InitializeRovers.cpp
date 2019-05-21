@@ -25,7 +25,6 @@ MarsRover::InitializeRovers::InitializeRovers(const std::string& input){
     ss >> corner2.first >> corner2.second;
     std::cout <<"Second corner read from input file (" << corner2.first << " " << corner2.second << ")\n";
 
-    //std::cout << "printing remaining lines of input file\n";
     std::string roverName{"dummyRover"};
     std::string startPosAndOrient, explorationInstructions;
     
@@ -38,8 +37,6 @@ MarsRover::InitializeRovers::InitializeRovers(const std::string& input){
             startPosAndOrient = line;
         if(lineCount%2==0){
             explorationInstructions = line;
-            //std::cout << "start pos " << startPosAndOrient << "\nExploration instrs: " << explorationInstructions <<"\n";
-            //calling rovers with appropriate parameters
             roverName = rover_names[lineCount/2];   
             std::shared_ptr<MarsRover::Rover> tempRover(new MarsRover::Rover(roverName, startPosAndOrient, explorationInstructions, corner2));
             m_roverContainer.push_back(tempRover);
