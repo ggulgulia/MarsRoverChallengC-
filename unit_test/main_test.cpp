@@ -47,18 +47,27 @@ TEST_F(RoverTest, SetRoverPosition){
 }
 
 TEST_F(RoverTest, NumberOfStepsToMove){
-    EXPECT_EQ(5, dummyRover->get_num_steps_to_move("MMMMM"));
+    EXPECT_EQ(5, dummyRover->get_num_steps_to_move("MLMLMLMLMLLLL"));
 }
 
 TEST_F(RoverTest, MoveForward){
     
     dummyRover->set_position(1,1);
     dummyRover->set_orientation("E");
-    std::cout << " CURRENT ORIENTATION: " << dummyRover->get_orientation() << "\n\n";
     dummyRover->move_forward();
-    dummyRover->print_curr_pos();
     std::pair<int, int> result(2,1);
     EXPECT_EQ(result, dummyRover->get_curr_pos());
+}
+
+
+TEST_F(RoverTest, ExploreTerrain){
+    
+    dummyRover->set_position(1,1);
+    dummyRover->set_orientation("N");
+    dummyRover->set_exploration_instruction("RMRMRMR");
+    dummyRover->explore_terrain();
+    std::pair<int, int> result1(1,0);
+    EXPECT_EQ(result1, dummyRover->get_curr_pos());
 }
 
 int main(int argc, char **argv) {

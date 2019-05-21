@@ -56,11 +56,6 @@ namespace MarsRover{
             Rover(const std::string& name, const std::string& posAndHead, 
                 const std::string& exploration, const point& corner2);
 
-            //same as above but takes both corner as user input for Rovers 
-            //exploration bounds
-            //Rover(const std::string& name, const std::string& posAndHead, 
-            //    const std::string& exploration, const point& corner1, const point& corner2);
-
             ~Rover();
             Rover(const Rover& ) = delete; //prevent implicit copy constructors
             Rover operator=(Rover&) = delete; //prevent implicit assignment operator 
@@ -69,11 +64,12 @@ namespace MarsRover{
             void rotate_left() noexcept;
             void rotate_right() noexcept;
             void move_forward();
-            void move();
+            void explore_terrain();
             
             //setter functions
             void set_orientation(const std::string& o) noexcept;
             void set_position(int x, int y) noexcept;
+            void set_exploration_instruction(const std::string& expl);
 
             //getter functions
             const std::string get_name() noexcept;
