@@ -17,7 +17,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 * GNU GCC compiler preferably version 5.4.0 or higher (with C++11 support) 
-* Google Test Framework installed on the machine
+* Google Test Framework headers and libraries installed on the machine presumably in the `/usr/local/includes` and `/usr/local/libs` 
 
 ### Building the project (step by step guide)
 
